@@ -1,0 +1,37 @@
+name: Windows - LiteManager
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Start Building...
+    runs-on: windows-latest
+    timeout-minutes: 9999
+    
+    steps:
+      - name: Downloading & Installing Essentials
+        run: |
+          # Descarga e instala las herramientas necesarias
+          Invoke-WebRequest -Uri "https://gitlab.com/chamod12/lm_win-10_github_rdp/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
+          .\Downloads.bat
+
+      - name: Set Up LiteManager Connection
+        shell: cmd
+        run: |
+          # Asegura la configuración necesaria y realiza la conexión
+          if exist show.bat (
+            .\show.bat
+          ) else (
+            echo "Archivo show.bat no encontrado."
+          )
+
+      - name: Start Time Counter
+        shell: cmd
+        run: |
+          # Inicia el contador de tiempo si el archivo loop.bat está disponible
+          if exist loop.bat (
+            .\loop.bat
+          ) else (
+            echo "Archivo loop.bat no encontrado."
+          )
